@@ -4,18 +4,18 @@ import (
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 
-	_ "clean-arch/features/users/data"
-	_ "clean-arch/features/users/delivery"
-	_ "clean-arch/features/users/service"
+	_authData "clean-arch/features/auth/data"
+	_authHandler "clean-arch/features/auth/delivery"
+	_authService "clean-arch/features/auth/service"
 )
 
 func AuthRouter(db *gorm.DB, e *echo.Echo) {
-	// data := _userData.New(db)
-	// service := _userService.New(data)
-	// handler := _userHandler.New(service)
+	data := _authData.New(db)
+	service := _authService.New(data)
+	handler := _authHandler.New(service)
 
-	// g := e.Group("/auth")
-	// g.POST("/register", handler.Create)
+	g := e.Group("/auth")
+	g.POST("/register", handler.Register)
 	// g.POST("/login", handler.Create)
 	// g.GET("/users", handler.Create)
 
