@@ -53,7 +53,7 @@ func (u *UserHandler) Create(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, helpers.ResponseFail(err.Error()))
 	}
 
-	return c.JSON(http.StatusOK, helpers.ResponseSuccess("berhasil insert data user", UserEntityToUserResponse(user)))
+	return c.JSON(http.StatusCreated, helpers.ResponseSuccess("Register Success", UserEntityToUserResponse(user)))
 }
 
 func (u *UserHandler) Update(c echo.Context) error {
