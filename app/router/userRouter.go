@@ -20,5 +20,4 @@ func UserRouter(db *gorm.DB, e *echo.Echo) {
 	g.POST("", handler.Create)
 	g.PUT("/:id", handler.Create)
 	g.DELETE("/:id", handler.Create)
-
 }
