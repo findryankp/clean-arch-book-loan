@@ -26,6 +26,16 @@ func (u *AuthHandler) Login(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helpers.ResponseFail("error bind data"))
 	}
 
+	user, err := u.Service.Login(loginRequest.Email)
+	if err != nil {
+		return c.JSON(http.StatusUnauthorized, helpers.ResponseFail("User not found"))
+	}
+
+	//compare password
+	if !helpers.CheckPasswordHash(loginRequest.Password, user.Password) {
+		return c.JSON(http.StatusUnauthorized, helpers.ResponseFail("User password not match"))
+	}
+
 	return c.JSON(http.StatusOK, helpers.ResponseSuccess("-", loginRequest))
 }
 

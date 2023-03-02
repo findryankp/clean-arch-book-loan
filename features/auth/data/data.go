@@ -4,7 +4,6 @@ import (
 	"clean-arch/features/auth"
 	"clean-arch/features/users"
 	"clean-arch/features/users/data"
-	"clean-arch/features/users/delivery"
 
 	"gorm.io/gorm"
 )
@@ -14,11 +13,12 @@ type query struct {
 }
 
 // Login implements authuser.AuthDataInterface
-func (q *query) Login(request delivery.UserRequest) (users.UserEntity, error) {
+func (q *query) GetUserByEmail(email string) (users.UserEntity, error) {
 	var user data.User
-	if err := q.db.Where(&request).First(&user); err.Error != nil {
+	if err := q.db.Where("email", email).First(&user); err.Error != nil {
 		return users.UserEntity{}, err.Error
 	}
+
 	return data.UserToUserEntity(user), nil
 }
 

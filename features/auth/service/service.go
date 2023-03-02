@@ -3,7 +3,6 @@ package service
 import (
 	"clean-arch/features/auth"
 	"clean-arch/features/users"
-	"clean-arch/features/users/delivery"
 )
 
 type authService struct {
@@ -16,8 +15,8 @@ func New(u auth.AuthDataInterface) auth.AuthServiceInterface {
 	}
 }
 
-func (u *authService) Login(a delivery.UserRequest) (users.UserEntity, error) {
-	return u.data.Login(a)
+func (u *authService) Login(email string) (users.UserEntity, error) {
+	return u.data.GetUserByEmail(email)
 }
 
 func (u *authService) Register(request users.UserEntity) error {
