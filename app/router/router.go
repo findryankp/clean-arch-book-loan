@@ -8,6 +8,6 @@ import (
 func InitRouter(db *gorm.DB, e *echo.Echo) {
 	// middlewares.BasicLogger(e)
 	// _a.AuthRouter(db, e)
-	// _u.UserRouter(db, e)
+	UserRouter(db, e)
 	// _b.BookRouter(db, e)
 }
