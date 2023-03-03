@@ -1,8 +1,8 @@
 package delivery
 
 import (
+	"clean-arch/app/middlewares"
 	"clean-arch/features/auth"
-	"clean-arch/features/users/data"
 	"clean-arch/features/users/delivery"
 	"clean-arch/utils/helpers"
 	"net/http"
@@ -26,17 +26,16 @@ func (u *AuthHandler) Login(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helpers.ResponseFail("error bind data"))
 	}
 
-	user, err := u.Service.Login(loginRequest.Email)
+	token, err := u.Service.Login(loginRequest.Email, loginRequest.Password)
 	if err != nil {
 		return c.JSON(http.StatusUnauthorized, helpers.ResponseFail("User not found"))
 	}
 
-	//compare password
-	if !helpers.CheckPasswordHash(loginRequest.Password, user.Password) {
-		return c.JSON(http.StatusUnauthorized, helpers.ResponseFail("User password not match"))
+	tokesResponse := map[string]any{
+		"token": token,
 	}
 
-	return c.JSON(http.StatusOK, helpers.ResponseSuccess("-", loginRequest))
+	return c.JSON(http.StatusOK, helpers.ResponseSuccess("Login Success", tokesResponse))
 }
 
 func (u *AuthHandler) Register(c echo.Context) error {
@@ -54,6 +53,12 @@ func (u *AuthHandler) Register(c echo.Context) error {
 }
 
 func (u *AuthHandler) GetUserLogin(c echo.Context) error {
-	var user data.User
-	return c.JSON(http.StatusOK, helpers.ResponseSuccess("-", user))
+	bbb := middlewares.ClaimsToken(c)
+	// user_id, roles := middlewares.ClaimsToken(c)
+	// data := map[string]any{
+	// 	"user_id": user_id,
+	// 	"role":    roles,
+	// }
+	// fmt.Println("SELESAI 1")
+	return c.JSON(http.StatusOK, helpers.ResponseSuccess("-", bbb))
 }
